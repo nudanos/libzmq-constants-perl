@@ -3,7 +3,7 @@ Section: perl
 Priority: optional
 Maintainer: NuDanOS Maintainers <jon@fernandez.tech>
 Build-Depends: debhelper-compat (= 13)
-Build-Depends-Indep: perl
+Build-Depends-Indep: perl, libmodule-install-perl
 Standards-Version: 4.7.2
 Homepage: https://metacpan.org/release/ZMQ-Constants
 Rules-Requires-Root: no
