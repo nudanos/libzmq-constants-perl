@@ -1,11 +1,14 @@
 Source: libzmq-constants-perl
 Section: perl
 Priority: optional
-Maintainer: Vyatta Package Maintainers <DL-vyatta-help@att.com>
-Build-Depends: debhelper (>= 9)
+Maintainer: NuDanOS Maintainers <jon@fernandez.tech>
+Build-Depends: debhelper-compat (= 13)
 Build-Depends-Indep: perl
-Standards-Version: 3.9.6
+Standards-Version: 4.7.2
 Homepage: https://metacpan.org/release/ZMQ-Constants
+Rules-Requires-Root: no
+Vcs-Git: https://github.com/nudanos/libzmq-constants-perl.git
+Vcs-Browser: https://github.com/nudanos/libzmq-constants-perl
 
 Package: libzmq-constants-perl
 Architecture: all

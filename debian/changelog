@@ -1,3 +1,9 @@
+libzmq-constants-perl (1.04-1vyatta2+nudanos1) trixie; urgency=medium
+
+  * Port to Debian 13 (trixie): debhelper-compat 13, Standards-Version 4.7.2, Rules-Requires-Root, NuDanOS Vcs.
+
+ -- NuDanOS Maintainers <jon@fernandez.tech>  Wed, 30 Sep 2026 08:26:32 -0700
+
 libzmq-constants-perl (1.04-1vyatta2) unstable; urgency=medium
 
   * DANOS Import master
