@@ -1,13 +1,15 @@
+#!/usr/bin/perl
 use strict;
+use warnings;
 use Test::More;
 
 BEGIN {
     use_ok "ZMQ::Constants", ':v4.0.4', ':all';
 }
 
-foreach my $set (@ZMQ::Constants::CONSTANT_SETS) {
-    if ( $set->match('4.0.4') ) {
-        my @list = $set->get_export_oks();
+foreach my $constant_set (@ZMQ::Constants::CONSTANT_SETS) {
+    if ( $constant_set->match('4.0.4') ) {
+        my @list = $constant_set->get_export_oks();
         can_ok __PACKAGE__, @list;
     }
 }

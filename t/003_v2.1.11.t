@@ -1,13 +1,15 @@
+#!/usr/bin/perl
 use strict;
+use warnings;
 use Test::More;
 
 BEGIN {
     use_ok "ZMQ::Constants", ":v2.1.11", ":all";
 }
 
-foreach my $set (@ZMQ::Constants::CONSTANT_SETS) {
-    if ( $set->match('2.1.11') ) {
-        my @list = $set->get_export_oks();
+foreach my $constant_set (@ZMQ::Constants::CONSTANT_SETS) {
+    if ( $constant_set->match('2.1.11') ) {
+        my @list = $constant_set->get_export_oks();
         can_ok __PACKAGE__, @list;
     }
 }
@@ -46,8 +48,8 @@ foreach my $exist (
 {
     my $code = __PACKAGE__->can($exist),;
     ok $code, "$exist should exist in v2.1.11";
-    eval { $code->(); };
-    ok !$@, "$exist is callable";
+    my $callable = eval { $code->(); 1 } ? 1 : 0;
+    ok $callable, "$exist is callable";
 }
 
 done_testing;

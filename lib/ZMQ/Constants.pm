@@ -1,7 +1,9 @@
 package ZMQ::Constants;
 use strict;
-use base qw(Exporter);
-use Carp ();
+use warnings;
+use base               qw(Exporter);
+use Carp               ();
+use ZMQ::Constant::Set ();
 
 my %constants;
 
@@ -97,8 +99,8 @@ BEGIN {
     );
 }
 
-use constant \%constants;
-our @EXPORT;
+use constant \%constants;    ## no critic (ProhibitConstantPragma) reason: the exported constants are the module's API
+our @EXPORT;                 ## no critic (ProhibitAutomaticExportation) reason: each version set chooses its default exports (local @EXPORT in import)
 our @EXPORT_OK   = keys %constants;
 our %EXPORT_TAGS = (
     socket => [
@@ -218,12 +220,17 @@ our $VERSION = '1.04';
 our %SOCKOPT_MAP;
 
 sub set_sockopt_type {
-    my $type = shift;
-    foreach my $opt (@_) {
+    my ( $type, @opts ) = @_;
+    foreach my $opt (@opts) {
         $SOCKOPT_MAP{$opt} = $type;
     }
+    return;
 }
-sub get_sockopt_type { $SOCKOPT_MAP{ $_[0] } }
+
+sub get_sockopt_type {
+    my ($opt) = @_;
+    return $SOCKOPT_MAP{$opt};
+}
 
 set_sockopt_type(
     "int" => (
@@ -266,14 +273,15 @@ sub register_set {
         matcher => $cb,
         @args
       );
+    return;
 }
 
 sub import {
-    my $class = shift;
+    my ( $class, @imports ) = @_;
 
     my ( $version, @args );
-    foreach my $arg (@_) {
-        if ( $arg =~ /^:v(\d+\.\d+\.\d+$)/ ) {
+    foreach my $arg (@imports) {
+        if ( $arg =~ /^:v(\d+\.\d+\.\d+$)/x ) {
             $version = $1;
         }
         else {
@@ -286,54 +294,22 @@ sub import {
     }
 
     my $klass = $version;
-    $klass =~ s/\./_/g;
-    $klass = "ZMQ::Constants::V$klass";
-    eval "require $klass";
-    if ($@) {
+    $klass =~ s/\./_/gx;
+    ( my $file = "ZMQ/Constants/V$klass.pm" ) =~ s{::}{/}gx;
+    if ( !eval { require $file; 1 } ) {
         Carp::croak($@);
     }
 
-    foreach my $set (@CONSTANT_SETS) {
-        next unless $set->match($version);
-        local %EXPORT_TAGS = ();                     # $set->get_tags;
-        local @EXPORT_OK   = $set->get_export_oks;
-        local @EXPORT      = $set->get_exports;
+    foreach my $constant_set (@CONSTANT_SETS) {
+        next unless $constant_set->match($version);
+        local %EXPORT_TAGS = ();                              # $constant_set->get_tags;
+        local @EXPORT_OK   = $constant_set->get_export_oks;
+        local @EXPORT      = $constant_set->get_exports;
         $EXPORT_TAGS{all} = [ sort @EXPORT_OK ];
         $class->export_to_level( 1, $class, @args );
         last;
     }
-}
-
-package ZMQ::Constant::Set;
-use strict;
-
-sub new {
-    my ( $class, %args ) = @_;
-    bless {%args}, $class;
-}
-
-sub match {
-    my ( $self, $key ) = @_;
-    $self->{matcher}->($key);
-}
-
-sub get_tags {
-    my $t = $_[0]->{tags} || {};
-    return wantarray ? %$t : $t;
-}
-
-sub get_export_oks {
-    my $t = $_[0]->get_tags;
-    local $t->{all};
-    delete $t->{all};
-    my %u = map { ( $_ => 1 ) } map { @$_ } values %$t;
-    my $l = [ keys %u ];
-    return wantarray ? @$l : $l;
-}
-
-sub get_exports {
-    my $l = $_[0]->{exports} || [];
-    return wantarray ? @$l : $l;
+    return;
 }
 
 1;

@@ -1,0 +1,5 @@
+# NuDanOS lint (distro docs/porting.md).
+skip:
+  # Module::Install, bundled into the CPAN distribution by its release
+  # tooling: third-party code, not ZMQ::Constants (spec section 1)
+  - "inc/"
