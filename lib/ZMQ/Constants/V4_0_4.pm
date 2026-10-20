@@ -21,9 +21,8 @@ my %not_in_v4 = map { ( $_ => 1 ) } qw(
 );
 
 my $export_tags = Storable::dclone( \%ZMQ::Constants::EXPORT_TAGS );
-$export_tags->{socket} = [
-    'ZMQ_FAIL_UNROUTABLE', grep { !$not_in_v4{$_} } @{ $export_tags->{socket} }
-];
+$export_tags->{socket} =
+  [ 'ZMQ_FAIL_UNROUTABLE', grep { !$not_in_v4{$_} } @{ $export_tags->{socket} } ];
 $export_tags->{message} =
   [ grep { !$not_in_v4{$_} } @{ $export_tags->{message} } ];
 

@@ -16,10 +16,13 @@ while ( my $line = <$fh> ) {
     foreach my $cst ( sort keys %LOOKUP ) {
         next if $LOOKUP{$cst};
 
-        if ( $line =~ m/
+        if (
+            $line =~ m/
                 #define
                 \s+
-                $cst\s+\w+/x ) {
+                $cst\s+\w+/x
+          )
+        {
             $LOOKUP{$cst}++;
         }
 

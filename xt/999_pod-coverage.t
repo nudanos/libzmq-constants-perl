@@ -11,7 +11,7 @@ foreach my $module ( Test::Pod::Coverage::all_modules() ) {
     Test::Pod::Coverage::pod_coverage_ok(
         $module,
         {
-            trustme => [ qr/^[A-Z_]+$/ ],
+            trustme => [qr/^[A-Z_]+$/],
         },
         "Pod coverage on $module"
     );

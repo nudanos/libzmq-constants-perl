@@ -4,209 +4,223 @@ use base qw(Exporter);
 use Carp ();
 
 my %constants;
+
 BEGIN {
     my $zmq_hausnumero = 156384712;
-    %constants  = (
+    %constants = (
+
         # socket types
-        ZMQ_PAIR                => 0,
-        ZMQ_PUB                 => 1,
-        ZMQ_SUB                 => 2,
-        ZMQ_REQ                 => 3,
-        ZMQ_REP                 => 4,
-        ZMQ_DEALER              => 5,
-        ZMQ_ROUTER              => 6,
-        ZMQ_XREQ                => 5, # only on v2.x
-        ZMQ_XREP                => 6, # only on v2.x
-        ZMQ_PULL                => 7,
-        ZMQ_PUSH                => 8,
-        ZMQ_UPSTREAM            => 7, # only on v2.x
-        ZMQ_DOWNSTREAM          => 8, # only on v2.x
-        ZMQ_XPUB                => 9,
-        ZMQ_XSUB                => 10,
+        ZMQ_PAIR       => 0,
+        ZMQ_PUB        => 1,
+        ZMQ_SUB        => 2,
+        ZMQ_REQ        => 3,
+        ZMQ_REP        => 4,
+        ZMQ_DEALER     => 5,
+        ZMQ_ROUTER     => 6,
+        ZMQ_XREQ       => 5,    # only on v2.x
+        ZMQ_XREP       => 6,    # only on v2.x
+        ZMQ_PULL       => 7,
+        ZMQ_PUSH       => 8,
+        ZMQ_UPSTREAM   => 7,    # only on v2.x
+        ZMQ_DOWNSTREAM => 8,    # only on v2.x
+        ZMQ_XPUB       => 9,
+        ZMQ_XSUB       => 10,
 
         # message
-        ZMQ_MSG_MORE            => 1,   # only on v2.x
-        ZMQ_MAX_VSM_SIZE        => 30,  # only on v2.x
-        ZMQ_DELIMITER           => 31,  # only on v2.x
-        ZMQ_VSM                 => 32,  # only on v2.x
-        ZMQ_MSG_SHARED          => 128, # only on v2.x
-        ZMQ_MSG_MASK            => 129, # only on v2.x
+        ZMQ_MSG_MORE     => 1,      # only on v2.x
+        ZMQ_MAX_VSM_SIZE => 30,     # only on v2.x
+        ZMQ_DELIMITER    => 31,     # only on v2.x
+        ZMQ_VSM          => 32,     # only on v2.x
+        ZMQ_MSG_SHARED   => 128,    # only on v2.x
+        ZMQ_MSG_MASK     => 129,    # only on v2.x
 
+        ZMQ_HWM               => 1, # only on v2.x
+        ZMQ_SWAP              => 3, # only on v2.x
+        ZMQ_AFFINITY          => 4,
+        ZMQ_IDENTITY          => 5,
+        ZMQ_SUBSCRIBE         => 6,
+        ZMQ_UNSUBSCRIBE       => 7,
+        ZMQ_RATE              => 8,
+        ZMQ_RECOVERY_IVL      => 9,
+        ZMQ_MCAST_LOOP        => 10,
+        ZMQ_SNDBUF            => 11,
+        ZMQ_RCVBUF            => 12,
+        ZMQ_RCVMORE           => 13,
+        ZMQ_FD                => 14,
+        ZMQ_EVENTS            => 15,
+        ZMQ_TYPE              => 16,
+        ZMQ_LINGER            => 17,
+        ZMQ_RECONNECT_IVL     => 18,
+        ZMQ_BACKLOG           => 19,
+        ZMQ_RECOVERY_IVL_MSEC => 20,
+        ZMQ_RECONNECT_IVL_MAX => 21,
+        ZMQ_MAXMSGSIZE        => 22,
+        ZMQ_SNDHWM            => 23,
+        ZMQ_RCVHWM            => 24,
+        ZMQ_MULTICAST_HOPS    => 25,
+        ZMQ_RCVTIMEO          => 27,
+        ZMQ_SNDTIMEO          => 28,
+        ZMQ_IPV4ONLY          => 31,
+        ZMQ_LAST_ENDPOINT     => 32,
+        ZMQ_FAIL_UNROUTABLE   => 33,
 
-        ZMQ_HWM                 => 1, # only on v2.x
-        ZMQ_SWAP                => 3, # only on v2.x
-        ZMQ_AFFINITY            => 4,
-        ZMQ_IDENTITY            => 5,
-        ZMQ_SUBSCRIBE           => 6,
-        ZMQ_UNSUBSCRIBE         => 7,
-        ZMQ_RATE                => 8,
-        ZMQ_RECOVERY_IVL        => 9,
-        ZMQ_MCAST_LOOP          => 10,
-        ZMQ_SNDBUF              => 11,
-        ZMQ_RCVBUF              => 12,
-        ZMQ_RCVMORE             => 13,
-        ZMQ_FD                  => 14,
-        ZMQ_EVENTS              => 15,
-        ZMQ_TYPE                => 16,
-        ZMQ_LINGER              => 17,
-        ZMQ_RECONNECT_IVL       => 18,
-        ZMQ_BACKLOG             => 19,
-        ZMQ_RECOVERY_IVL_MSEC   => 20,
-        ZMQ_RECONNECT_IVL_MAX   => 21,
-        ZMQ_MAXMSGSIZE          => 22,
-        ZMQ_SNDHWM              => 23,
-        ZMQ_RCVHWM              => 24,
-        ZMQ_MULTICAST_HOPS      => 25,
-        ZMQ_RCVTIMEO            => 27,
-        ZMQ_SNDTIMEO            => 28,
-        ZMQ_IPV4ONLY            => 31,
-        ZMQ_LAST_ENDPOINT       => 32,
-        ZMQ_FAIL_UNROUTABLE     => 33,
+        ZMQ_MORE      => 1,
+        ZMQ_NOBLOCK   => 1,
+        ZMQ_DONTWAIT  => 1,
+        ZMQ_SNDMORE   => 2,
+        ZMQ_POLLIN    => 1,
+        ZMQ_POLLOUT   => 2,
+        ZMQ_POLLERR   => 4,
+        ZMQ_STREAMER  => 1,
+        ZMQ_FORWARDER => 2,
+        ZMQ_QUEUE     => 3,
 
-        ZMQ_MORE                => 1,
-        ZMQ_NOBLOCK             => 1,
-        ZMQ_DONTWAIT            => 1,
-        ZMQ_SNDMORE             => 2,
-        ZMQ_POLLIN              => 1,
-        ZMQ_POLLOUT             => 2,
-        ZMQ_POLLERR             => 4,
-        ZMQ_STREAMER            => 1,
-        ZMQ_FORWARDER           => 2,
-        ZMQ_QUEUE               => 3,
+        ZMQ_HAUSNUMERO => $zmq_hausnumero,
 
-        ZMQ_HAUSNUMERO          => $zmq_hausnumero,
-
-        # "On Windows platform some of the standard POSIX errnos are not 
+        # "On Windows platform some of the standard POSIX errnos are not
         # defined" says zmq.h
-        ENOTSUP                 => $zmq_hausnumero + 1,
-        EPROTONOSUPPORT         => $zmq_hausnumero + 2,
-        ENOBUFS                 => $zmq_hausnumero + 3,
-        ENETDOWN                => $zmq_hausnumero + 4,
-        EADDRINUSE              => $zmq_hausnumero + 5,
-        EADDRNOTAVAIL           => $zmq_hausnumero + 6,
-        ECONNREFUSED            => $zmq_hausnumero + 7,
-        EINPROGRESS             => $zmq_hausnumero + 8,
-        ENOTSOCK                => $zmq_hausnumero + 9,
+        ENOTSUP         => $zmq_hausnumero + 1,
+        EPROTONOSUPPORT => $zmq_hausnumero + 2,
+        ENOBUFS         => $zmq_hausnumero + 3,
+        ENETDOWN        => $zmq_hausnumero + 4,
+        EADDRINUSE      => $zmq_hausnumero + 5,
+        EADDRNOTAVAIL   => $zmq_hausnumero + 6,
+        ECONNREFUSED    => $zmq_hausnumero + 7,
+        EINPROGRESS     => $zmq_hausnumero + 8,
+        ENOTSOCK        => $zmq_hausnumero + 9,
 
         # "Native 0MQ error codes." as defined in zmq.h
-        EFSM                    => $zmq_hausnumero + 51,
-        ENOCOMPATPROTO          => $zmq_hausnumero + 52,
-        ETERM                   => $zmq_hausnumero + 53,
-        EMTHREAD                => $zmq_hausnumero + 54,
+        EFSM           => $zmq_hausnumero + 51,
+        ENOCOMPATPROTO => $zmq_hausnumero + 52,
+        ETERM          => $zmq_hausnumero + 53,
+        EMTHREAD       => $zmq_hausnumero + 54,
     );
 }
 
 use constant \%constants;
 our @EXPORT;
-our @EXPORT_OK = keys %constants;
+our @EXPORT_OK   = keys %constants;
 our %EXPORT_TAGS = (
-    socket => [ qw(
-        ZMQ_PAIR
-        ZMQ_PUB
-        ZMQ_SUB
-        ZMQ_REQ
-        ZMQ_REP
-        ZMQ_DEALER
-        ZMQ_ROUTER
-        ZMQ_PULL
-        ZMQ_PUSH
-        ZMQ_XPUB
-        ZMQ_XSUB
-        ZMQ_AFFINITY
-        ZMQ_IDENTITY
-        ZMQ_SUBSCRIBE
-        ZMQ_UNSUBSCRIBE
-        ZMQ_RATE
-        ZMQ_RECOVERY_IVL
-        ZMQ_RECOVERY_IVL_MSEC
-        ZMQ_SNDBUF
-        ZMQ_RCVBUF
-        ZMQ_RCVMORE
-        ZMQ_FD
-        ZMQ_EVENTS
-        ZMQ_TYPE
-        ZMQ_LINGER
-        ZMQ_RECONNECT_IVL
-        ZMQ_BACKLOG
-        ZMQ_RECONNECT_IVL_MAX
-        ZMQ_MAXMSGSIZE
-        ZMQ_SNDHWM
-        ZMQ_RCVHWM
-        ZMQ_MULTICAST_HOPS
-        ZMQ_RCVTIMEO
-        ZMQ_SNDTIMEO
-        ZMQ_IPV4ONLY
-        ZMQ_LAST_ENDPOINT
-        ZMQ_FAIL_UNROUTABLE
-        ZMQ_DONTWAIT
-        ZMQ_SNDMORE
-        ZMQ_HWM
-        ZMQ_SWAP
-        ZMQ_NOBLOCK
-    ),
-    # only in v2.x
-    qw(
-        ZMQ_XREQ
-        ZMQ_XREP
-        ZMQ_UPSTREAM
-        ZMQ_DOWNSTREAM
-        ZMQ_HWM
-        ZMQ_SWAP
-    ) ],
-    message => [ qw(
-        ZMQ_MORE
-        ZMQ_MSG_MORE
-        ZMQ_MAX_VSM_SIZE
-        ZMQ_DELIMITER
-        ZMQ_VSM
-        ZMQ_MSG_SHARED
-        ZMQ_MSG_MASK
-    ),
-    # only in v2.x
-    qw(
-        ZMQ_MSG_MORE
-        ZMQ_MAX_VSM_SIZE
-        ZMQ_DELIMITER
-        ZMQ_VSM
-        ZMQ_MSG_SHARED
-        ZMQ_MSG_MASK
-    ) ],
-    poller => [ qw(
-        ZMQ_POLLIN
-        ZMQ_POLLOUT
-        ZMQ_POLLERR
-    ) ],
-    device => [ qw(
-        ZMQ_STREAMER
-        ZMQ_FORWARDER
-        ZMQ_QUEUE
-    ) ],
-    errors => [ qw(
-        ZMQ_HAUSNUMERO
-        ENOTSUP
-        EPROTONOSUPPORT
-        ENOBUFS
-        ENETDOWN
-        EADDRINUSE
-        EADDRNOTAVAIL
-        ECONNREFUSED
-        EINPROGRESS
-        ENOTSOCK
-        EFSM
-        ENOCOMPATPROTO
-        ETERM
-        EMTHREAD
-    ) ]
+    socket => [
+        qw(
+          ZMQ_PAIR
+          ZMQ_PUB
+          ZMQ_SUB
+          ZMQ_REQ
+          ZMQ_REP
+          ZMQ_DEALER
+          ZMQ_ROUTER
+          ZMQ_PULL
+          ZMQ_PUSH
+          ZMQ_XPUB
+          ZMQ_XSUB
+          ZMQ_AFFINITY
+          ZMQ_IDENTITY
+          ZMQ_SUBSCRIBE
+          ZMQ_UNSUBSCRIBE
+          ZMQ_RATE
+          ZMQ_RECOVERY_IVL
+          ZMQ_RECOVERY_IVL_MSEC
+          ZMQ_SNDBUF
+          ZMQ_RCVBUF
+          ZMQ_RCVMORE
+          ZMQ_FD
+          ZMQ_EVENTS
+          ZMQ_TYPE
+          ZMQ_LINGER
+          ZMQ_RECONNECT_IVL
+          ZMQ_BACKLOG
+          ZMQ_RECONNECT_IVL_MAX
+          ZMQ_MAXMSGSIZE
+          ZMQ_SNDHWM
+          ZMQ_RCVHWM
+          ZMQ_MULTICAST_HOPS
+          ZMQ_RCVTIMEO
+          ZMQ_SNDTIMEO
+          ZMQ_IPV4ONLY
+          ZMQ_LAST_ENDPOINT
+          ZMQ_FAIL_UNROUTABLE
+          ZMQ_DONTWAIT
+          ZMQ_SNDMORE
+          ZMQ_HWM
+          ZMQ_SWAP
+          ZMQ_NOBLOCK
+        ),
+
+        # only in v2.x
+        qw(
+          ZMQ_XREQ
+          ZMQ_XREP
+          ZMQ_UPSTREAM
+          ZMQ_DOWNSTREAM
+          ZMQ_HWM
+          ZMQ_SWAP
+        )
+    ],
+    message => [
+        qw(
+          ZMQ_MORE
+          ZMQ_MSG_MORE
+          ZMQ_MAX_VSM_SIZE
+          ZMQ_DELIMITER
+          ZMQ_VSM
+          ZMQ_MSG_SHARED
+          ZMQ_MSG_MASK
+        ),
+
+        # only in v2.x
+        qw(
+          ZMQ_MSG_MORE
+          ZMQ_MAX_VSM_SIZE
+          ZMQ_DELIMITER
+          ZMQ_VSM
+          ZMQ_MSG_SHARED
+          ZMQ_MSG_MASK
+        )
+    ],
+    poller => [
+        qw(
+          ZMQ_POLLIN
+          ZMQ_POLLOUT
+          ZMQ_POLLERR
+        )
+    ],
+    device => [
+        qw(
+          ZMQ_STREAMER
+          ZMQ_FORWARDER
+          ZMQ_QUEUE
+        )
+    ],
+    errors => [
+        qw(
+          ZMQ_HAUSNUMERO
+          ENOTSUP
+          EPROTONOSUPPORT
+          ENOBUFS
+          ENETDOWN
+          EADDRINUSE
+          EADDRNOTAVAIL
+          ECONNREFUSED
+          EINPROGRESS
+          ENOTSOCK
+          EFSM
+          ENOCOMPATPROTO
+          ETERM
+          EMTHREAD
+        )
+    ]
 );
-$EXPORT_TAGS{all} = [ @EXPORT_OK ];
+$EXPORT_TAGS{all} = [@EXPORT_OK];
 
 our $VERSION = '1.04';
 
 our %SOCKOPT_MAP;
+
 sub set_sockopt_type {
     my $type = shift;
-    foreach my $opt ( @_ ) {
-        $SOCKOPT_MAP{ $opt } = $type;
+    foreach my $opt (@_) {
+        $SOCKOPT_MAP{$opt} = $type;
     }
 }
 sub get_sockopt_type { $SOCKOPT_MAP{ $_[0] } }
@@ -228,64 +242,49 @@ set_sockopt_type(
         ZMQ_RCVTIMEO,
         ZMQ_SNDTIMEO,
         ZMQ_IPV4ONLY,
-        ZMQ_FD, # SOCKET on Windows... yikes, how do we handle this?
+        ZMQ_FD,    # SOCKET on Windows... yikes, how do we handle this?
         ZMQ_EVENTS,
         ZMQ_BACKLOG,
     )
 );
 
-set_sockopt_type(
-    "uint64" => (
-        ZMQ_AFFINITY,
-        ZMQ_HWM,
-    )
-);
+set_sockopt_type( "uint64" => ( ZMQ_AFFINITY, ZMQ_HWM, ) );
+
+set_sockopt_type( "int64" => ( ZMQ_MAXMSGSIZE, ZMQ_RECOVERY_IVL_MSEC, ZMQ_SWAP, ) );
 
 set_sockopt_type(
-    "int64" => (
-        ZMQ_MAXMSGSIZE,
-        ZMQ_RECOVERY_IVL_MSEC,
-        ZMQ_SWAP,
-    )
-);
-
-set_sockopt_type(
-    "string" => (
-        ZMQ_SUBSCRIBE,
-        ZMQ_UNSUBSCRIBE,
-        ZMQ_LAST_ENDPOINT,
-        ZMQ_IDENTITY,
-    )
-);
+    "string" => ( ZMQ_SUBSCRIBE, ZMQ_UNSUBSCRIBE, ZMQ_LAST_ENDPOINT, ZMQ_IDENTITY, ) );
 
 our @CONSTANT_SETS;
 
 sub register_set {
-    my ($version, @args) = @_;
-    my $cb = (ref $version eq 'CODE') ? $version : sub { $version eq $_[0] };
+    my ( $version, @args ) = @_;
+    my $cb = ( ref $version eq 'CODE' ) ? $version : sub { $version eq $_[0] };
 
-    push @CONSTANT_SETS, ZMQ::Constant::Set->new(
+    push @CONSTANT_SETS,
+      ZMQ::Constant::Set->new(
         matcher => $cb,
         @args
-    );
+      );
 }
 
 sub import {
     my $class = shift;
 
-    my ($version, @args);
-    foreach my $arg ( @_ ) {
+    my ( $version, @args );
+    foreach my $arg (@_) {
         if ( $arg =~ /^:v(\d+\.\d+\.\d+$)/ ) {
             $version = $1;
-        } else {
+        }
+        else {
             push @args, $arg;
         }
     }
-    if (! $version ) {
+    if ( !$version ) {
         $class->export_to_level( 1, $class, @args );
         return;
     }
-        
+
     my $klass = $version;
     $klass =~ s/\./_/g;
     $klass = "ZMQ::Constants::V$klass";
@@ -294,33 +293,32 @@ sub import {
         Carp::croak($@);
     }
 
-    foreach my $set ( @CONSTANT_SETS ) {
-        next unless $set->match( $version );
-        local %EXPORT_TAGS = (); # $set->get_tags;
+    foreach my $set (@CONSTANT_SETS) {
+        next unless $set->match($version);
+        local %EXPORT_TAGS = ();                     # $set->get_tags;
         local @EXPORT_OK   = $set->get_export_oks;
         local @EXPORT      = $set->get_exports;
-        $EXPORT_TAGS{all}  = [ sort @EXPORT_OK ];
+        $EXPORT_TAGS{all} = [ sort @EXPORT_OK ];
         $class->export_to_level( 1, $class, @args );
         last;
     }
 }
 
-package
-    ZMQ::Constant::Set;
+package ZMQ::Constant::Set;
 use strict;
 
 sub new {
-    my ($class, %args) = @_;
-    bless { %args }, $class;
+    my ( $class, %args ) = @_;
+    bless {%args}, $class;
 }
 
 sub match {
-    my ($self, $key) = @_;
+    my ( $self, $key ) = @_;
     $self->{matcher}->($key);
 }
 
 sub get_tags {
-    my $t =  $_[0]->{tags} || {};
+    my $t = $_[0]->{tags} || {};
     return wantarray ? %$t : $t;
 }
 
@@ -328,7 +326,7 @@ sub get_export_oks {
     my $t = $_[0]->get_tags;
     local $t->{all};
     delete $t->{all};
-    my %u = map { ($_ => 1) } map { @$_ } values %$t;
+    my %u = map { ( $_ => 1 ) } map { @$_ } values %$t;
     my $l = [ keys %u ];
     return wantarray ? @$l : $l;
 }
